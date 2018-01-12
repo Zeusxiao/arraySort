@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>arraysort</title>
+</head>
+<style>
+	*{
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		text-decoration: none;
+		box-sizing: border-box;
+	}
+	html,body{
+		width: 100vw;
+		height: 100vh;
+		background: #000 !important;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	div.box{
+		width: 30%;
+		height: 80%;
+		border: 2px solid lightseagreen;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+	header{
+		width: 100%;height: 50px;
+		padding: 10px 15px;
+		font-size: 24px;
+		color: #d6d1d1;
+		text-align: center;
+		line-height: 30px;
+        border-bottom: 2px solid lightseagreen;
+	}
+	ul{
+		width: 100%;flex: 1;
+
+	}
+	li{
+		width: 100%;height: 20%;
+		border-bottom:1px dashed #53606d;
+		padding:20px 15px;
+		display: flex;
+		flex-direction:column;
+		justify-content: space-between; 
+	}
+	p{
+		font-size: 18px;
+		color: #9c7373;
+		text-align: left;
+	}
+	span{
+		font-size: 16px;
+		color: #d6d1d1;
+		display: block;
+		padding-left: 20px;
+	}
+</style>
+<body>
+<div class="box">
+	<header>数组排序方法</header>
+	<ul>
+		<li>
+			<p>js自带排序：[26,34,3,4,23,44,333,444]</p>
+			<span id="sort1"></span>
+		</li>
+		<li>
+			<p>快速排序：[3,6,4,8,7,1,9]</p>
+			<span id="sort2"></span>
+		</li>
+		<li>
+			<p>冒泡排序：[3,5,9,66,47,85,8]</p>
+			<span id="sort3"></span>
+		</li>
+		<li>
+			<p>插入排序：[44,33,22,11,55,88,99]</p>
+			<span id="sort4"></span>
+		</li>
+		<li>
+			<p>选择排序：[74,12,66,23,45,2,48,65]</p>
+			<span id="sort5"></span>
+		</li>
+	</ul>
+</div>
+    
+
+<script>
+	////////////////// js自带排序///////////////////
+	var arr1 = [26,34,3,4,23,44,333,444];
+    arr1.sort(function(a,b){
+        return  a-b;
+    })
+    console.log(arr1);
+    //////
+    var sort1=document.getElementById('sort1');
+    sort1.innerHTML='['+arr1+']';
+
+    //////////////////快速排序///////////////////////
+	function quickSort(arr) {
+	　　if (arr.length <= 1) { return arr; }
+	　　var pivotIndex = Math.floor(arr.length / 2);
+	　　var pivot = arr.splice(pivotIndex, 1)[0];
+	　　var left = [];
+	　　var right = [];
+	　　for (var i = 0; i < arr.length; i++){
+	　　　　if (arr[i] < pivot) {
+	　　　　　　left.push(arr[i]);
+	　　　　} else {
+	　　　　　　right.push(arr[i]);
+	　　　　}
+	　　}
+	　　return quickSort(left).concat([pivot], quickSort(right));
+	};
+	var arr2=[3,6,4,8,7,1,9];
+	var sort2=document.getElementById('sort2');
+	sort2.innerHTML='['+quickSort(arr2)+']';
+
+	/////////////////////冒泡排序////////////////////
+	function bubblingSort(arr){
+        for(var i=0;i<arr.length;i++){
+            for(var j=i+1;j<arr.length;j++){
+                if(arr[j]<arr[i]){
+                    var temp = arr[j];
+                    arr[j]=arr[i];
+                    arr[i]=temp;
+                }
+            }
+        
+        }
+        return arr;
+	} 
+	arr3=[3,5,9,66,47,85,8];
+	var sort3=document.getElementById('sort3');
+	sort3.innerHTML='['+bubblingSort(arr3)+']';
+
+	/////////////////////插入排序////////////////////
+    function insertSort(arr){
+        /*start根据已排列好的项数决定*/
+        var start=1;
+        /*按顺序，每一项检查已排列好的序列*/
+        for(var i=start; i<arr.length; start++,i++){
+            /*跟已排好序的序列做对比，并插入到合适的位置*/
+            for(var j=0; j<start; j++){
+                /*小于或者等于时（我们是升序）插入到该项前面*/
+                if(arr[i]<=arr[j]){
+//                console.log(arr[i]+' '+arr[j]);
+                    arr.splice(j,0,arr[i]);
+                    /*删除原有项*/
+                    arr.splice(i+1,1);
+                    break;
+                }
+            }
+
+        }
+        return arr
+    }
+    var arr4=[44,33,22,11,55,88,99];
+    var sort4=document.getElementById('sort4');
+    sort4.innerHTML='['+insertSort(arr4)+']';
+
+    ///////////////////////选择排序法////////////////////
+    function choiceSort(arr){
+        /*给每个插入后的未确定的范围循环，初始是从0开始*/
+        for(var i=0; i<arr.length; i++){
+            /*设置当前范围的最小值和其索引*/
+            var min = arr[i];
+            var minIndex = i;
+            /*在该范围内选出最小值*/
+            for(var j=i+1; j<arr.length; j++){
+                if(min>arr[j]){
+                    min = arr[j];
+                    minIndex = j;
+                }
+            }
+            /*将最小值插入到i，并且把它所在的原有项替换成*/
+            arr.splice(i,0,min);
+            arr.splice(minIndex+1,1);
+        }
+        return arr
+    }
+    var arr5=[74,12,66,23,45,2,48,65];
+    var sort5=document.getElementById('sort5');
+    sort5.innerHTML='['+choiceSort(arr5)+']';
+</script>
+
+	
+</body>
+</html>
